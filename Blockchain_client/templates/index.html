@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <title>Blockchain Client</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Blockchain Client</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Generate Wallet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/make/transaction">Make Transaction</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/view/transaction">View Transaction</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div align="center" class="container">
+    <h3>Generate Wallet</h3>
+    <p>Click on the below button to generate new Wallet</p>
+    <input class="btn btn-primary" type="button" value="Generate Wallet"/>
+</div>
+<br>
+<div align="center" class="container">
+    <label>Public Key:</label>
+    <div>
+        <textarea cols="100" id="public_key" readonly rows="5"></textarea>
+    </div>
+</div>
+<br>
+
+<div align="center" class="container">
+    <label>Private Key:</label>
+    <div>
+        <textarea cols="100" id="private_key" readonly rows="10"></textarea>
+    </div>
+</div>
+
+
+<script>
+
+    $(function(){
+        $('input').click(function(){
+
+        $.ajax({
+            url: '/wallet/new',
+            type: 'Get',
+            success: function(response){
+                document.getElementById("public_key").innerHTML = response['public_key'],
+                document.getElementById("private_key").innerHTML = response['private_key']
+            },
+            error: function(error){
+                console.log(error);
+            }
+            });
+        });
+    });
+
+
+
+
+
+
+</script>
+
+
+</body>
+</html>

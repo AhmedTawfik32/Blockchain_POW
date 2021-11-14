@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"
+            type="text/javascript"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> -->
+
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+
+
+    <title>Configure Blockchain</title>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Blockchain FrontEnd</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/#">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Configure</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<form action="/action_page.php" class="needs-validation" id="form_id" novalidate>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="card-body">
+                    <h2 class="card-title">Add blockchain nodes</h2>
+                    <p class="card-title">Enter a blockchain nodes URL separated by comma and click on "Add Node" button
+                        to add them</p>
+                    <label class="label font-weight-bold">Node URLs:</label>
+                    <input class="form-control form-control-sm" id="node_url_txt" name="node_url_txt" required
+                           type="text" value="127.0.0.1:5002">
+                    <br>
+                    <input class="btn btn-primary btn-lg" id="node_url_btn" type="button" value="Add Node"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container">
+    <h2 class="card-title">This node will get the blockchain date from these nodes</h2>
+</div>
+<br>
+<div class="container">
+    <span id="nodes"></span>
+
+</div>
+
+
+<script>
+
+    $(function(){
+
+        $("#node_url_btn").click(function(){
+
+            $.ajax({
+                url: "/nodes/register",
+                type: "Post",
+                dataType: "json",
+                header: {'Access-Control-Allow-Origin':'*'},
+                data: $("#form_id").serialize(),
+                success: function(response){
+
+                    for(i=0; i< response['total_nodes'].length; i++){
+
+                        $('#nodes').append("\u2022"+response['total_nodes'][i]+"<br>");
+
+                    }
+
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+
+        });
+
+    });
+
+
+
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"
+            type="text/javascript"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> -->
+
+    <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+
+
+    <title>Make Transaction</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Blockchain Client</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/#">Generate Wallet</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Make Transaction</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/view/transaction">View Transaction</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Make Transaction</h2>
+    <p>Fill these fields to make tarnsaction.</p>
+    <form action="/action_page.php" class="needs-validation" id="form_id" novalidate>
+        <div class="form-group">
+            <label>Sender Public Key:</label>
+            <input class="form-control" id="sender_public_key" name="sender_public_key"
+                   placeholder="Enter sender Public key"
+                   required type="text">
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <div class="form-group">
+            <label>Sender Private Key</label>
+            <input class="form-control" id="sender_private_key" name="sender_private_key"
+                   placeholder="Enter sender priavte key"
+                   required type="text">
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+
+        <div class="form-group">
+            <label>Recepient Public Key:</label>
+            <input class="form-control" id="recipient_public_key" name="recipient_public_key"
+                   placeholder="Enter Recipient Public Key"
+                   required type="text">
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+
+        <div class="form-group">
+            <label>Amount:</label>
+            <input class="form-control" id="amount" name="amount" placeholder="Enter the amount" required type="text">
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <button align="center" class="btn btn-primary" id="make_transaction_id" type="button">Make Transaction</button>
+    </form>
+</div>
+
+
+<!-- The Modal -->
+<div aria-hidden="true" class="modal modal-alert fade" id="confirmation_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm this transaction</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <form action="/action_page.php" class="needs-validation" id="confirmation_form_id" novalidate>
+                    <div class="form-group">
+                        <label>Sender Public Key:</label>
+                        <input class="form-control" id="confirmation_sender_public_key"
+                               name="confirmation_sender_public_key"
+                               readonly type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Recipient Public Key:</label>
+                        <input class="form-control" id="confirmation_recipient_public_key"
+                               name="confirmation_recipient_public_key"
+                               readonly type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount:</label>
+                        <input class="form-control" id="confirmation_amount" name="confirmation_amount" readonly
+                               type="text">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Signature:</label>
+                        <input class="form-control" id="confirmation_signature" name="confirmation_signature"
+                               readonly type="text">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blockchain Node URL:</label>
+                        <input class="form-control" id="confirmation_target_url" type="text"
+                               value="http://127.0.0.1:5001">
+                    </div>
+
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-success" id="confirm_transaction_btn" type="button">Confirm Transaction</button>
+                <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div aria-hidden="true" class="modal modal-alert fade" id="success_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header success">
+                <h4 class="modal-title">Successful Transaction</h4>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>Your transaction is successfully added</p>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" type="button">OK</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(function(){
+
+        $("#make_transaction_id").click(function(){
+
+            $.ajax({
+                url: "/generate/transaction",
+                type: "post",
+                dataType: "json",
+                data: $("#form_id").serialize(),
+                success: function(response){
+                     document.getElementById('confirmation_sender_public_key').value = response['transaction']['sender_public_key'];
+                     document.getElementById('confirmation_recipient_public_key').value = response['transaction']['recipient_public_key'];
+                     document.getElementById('confirmation_amount').value = response['transaction']['amount'];
+                     document.getElementById('confirmation_signature').value = response['signature'];
+
+                    $('#confirmation_modal').modal('show');
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+        });
+
+        $('#confirm_transaction_btn').click(function(){
+
+            $.ajax({
+                url: $('#confirmation_target_url').val() + "/transaction/new",
+                type: "POST",
+                dataType: "json",
+                header: {'Access-Control-Allow-Origin':'*'},
+                data: $('#confirmation_form_id').serialize(),
+                success: function(response){
+                    //$('#sender_public_key').val('');
+                    //$('#sender_private_key').val('');
+                    //$('#recipient_public_key').val('');
+                    //$('#amount').val('');
+
+                    $('#confirmation_modal').modal('hide');
+                    $('#success_modal').modal('show');
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+
+        });
+
+    });
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
